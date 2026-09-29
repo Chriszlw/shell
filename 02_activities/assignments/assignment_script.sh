@@ -18,6 +18,7 @@ cd newproject
 
 mkdir analysis output
 touch README.md
+echo "# Project Name: DSI Consulting Inc." > README.md
 touch analysis/main.py
 
 # download client data
@@ -45,11 +46,51 @@ cp ./data/raw/*server*.log ./data/processed/server_logs/
 cp ./data/raw/*user*.log ./data/processed/user_logs/
 cp ./data/raw/*event*.log ./data/processed/event_logs/
 # 7. For user privacy, remove all files containing IP addresses (files with "ipaddr" in the filename) from ./data/raw and ./data/processed/user_logs
+<<<<<<< HEAD
 rm ./data/raw/*ipaddr*
 rm ./data/processed/user_logs/*ipaddr*
+=======
+rf -rf ./data
+
+>>>>>>> 93b0ce62c8e1521dc6a70f3f9dbd56faa69ebad7
 # 8. Create a file named ./data/inventory.txt that lists all the files in the subfolders of ./data/processed
 touch ./data/inventory.txt
 ls ./data/processed/*/* > ./data/inventory.txt
+
+###########################################
+
+echo "Project setup is complete!"
+###########################################
+# Part 2: Merge in Updates from Coworkers
+###########################################
+
+# 9. Pull changes from the coworker's branch
+git pull https://github.com/UofT-DSI/shell coworker-changes --no-rebase
+
+# 10. Check the repository for merge conflicts
+git status
+
+# 11. Check whether there are any unresolved merge conflicts
+if git diff --name-only --diff-filter=U | grep -q .; then
+    echo "Merge conflicts detected!"
+    echo "The following files have conflicts:"
+    git diff --name-only --diff-filter=U
+    echo "Resolve the conflicts, then run:"
+    echo "git add <resolved-files>"
+    echo "git commit -m \"Merge coworker changes\""
+    exit 1
+fi
+
+# 12. If the merge completed without conflicts, show the result
+echo "Coworker changes merged successfully."
+
+# 13. Re-test the project setup
+echo "Checking project files..."
+ls ./data/raw
+ls ./data/processed/server_logs
+ls ./data/processed/user_logs
+ls ./data/processed/event_logs
+cat ./data/inventory.txt
 
 ###########################################
 
